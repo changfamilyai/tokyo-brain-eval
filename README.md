@@ -22,6 +22,15 @@ export TOKYO_BRAIN_URL=https://onboarding.tokyobrain.ai
 python benchmark.py
 ```
 
+## How to run
+
+1. Use Python 3 and install the dependencies: `pip install tokyo-brain datasets`.
+2. Export `TOKYO_BRAIN_API_KEY` (required) and, optionally, `TOKYO_BRAIN_URL` (see [Configuration](#configuration)).
+3. From the repository root, run `python benchmark.py`. There are no command-line flags.
+4. Per-dimension and overall scores are printed to the terminal, and a JSON report is saved as `results/longmemeval_<timestamp>.json`.
+
+If the API key is unset, or `datasets` / `tokyo-brain` is not installed, the script prints an error and exits with status 1.
+
 ## What it measures
 
 | Dimension | Questions | What It Tests |
