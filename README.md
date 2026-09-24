@@ -48,13 +48,14 @@ These are from our internal reproduction runs using default configurations:
 
 ## Configuration
 
-Edit `config.py` to point to your memory system:
+The API endpoint and key are read from environment variables (see `config.py`); do not hard-code your key in the file:
 
-```python
-MEMORY_API_URL = "https://onboarding.tokyobrain.ai"
-MEMORY_API_KEY = "tb-your-key"
-TOP_K = 15
-```
+| Variable | Default | Purpose |
+|----------|---------|---------|
+| `TOKYO_BRAIN_URL` | `https://onboarding.tokyobrain.ai` | Memory system base URL |
+| `TOKYO_BRAIN_API_KEY` | *(none, required)* | API key |
+
+Benchmark settings (`TOP_K`, `MATCH_THRESHOLD`, `DATASET_NAME`, `RESULTS_DIR`) are edited directly in `config.py`. Results are written as JSON to `results/`.
 
 ## License
 
