@@ -15,7 +15,7 @@ import os
 import sys
 import time
 from collections import defaultdict
-from datetime import datetime, timezone
+from datetime import datetime
 
 try:
     from datasets import load_dataset
@@ -24,7 +24,7 @@ except ImportError:
     sys.exit(1)
 
 try:
-    from tokyo_brain import Brain, TokyoBrainError
+    from tokyo_brain import Brain
 except ImportError:
     print("Please install: pip install tokyo-brain")
     sys.exit(1)
@@ -37,10 +37,6 @@ from config import (
     RESULTS_DIR,
     TOP_K,
 )
-
-# Errors a Brain call can raise: API errors (TokyoBrainError), transport errors
-# (requests.RequestException subclasses OSError) and malformed JSON (ValueError).
-BRAIN_ERRORS = (TokyoBrainError, OSError, ValueError)
 
 
 def load_longmemeval():
@@ -91,7 +87,7 @@ def store_conversations(brain, dataset):
                         },
                     )
                     count += 1
-                except BRAIN_ERRORS as e:
+                except Exception as e:
                     print(f"  Store error: {e}")
 
         if count % 100 == 0 and count > 0:
@@ -121,7 +117,7 @@ def evaluate(brain, dataset):
             result = brain.recall(query=question, top_k=TOP_K)
             recalled_texts = [m.document for m in result.memories]
             recalled_combined = " ".join(recalled_texts).lower()
-        except BRAIN_ERRORS as e:
+        except Exception as e:
             print(f"  Recall error on Q{i}: {e}")
             recalled_combined = ""
 
@@ -175,13 +171,13 @@ def print_results(results_by_dim, total_correct, total_questions):
 def save_results(results_by_dim, total_correct, total_questions, overall):
     """Save results to JSON file."""
     os.makedirs(RESULTS_DIR, exist_ok=True)
-    timestamp = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     filepath = os.path.join(RESULTS_DIR, f"longmemeval_{timestamp}.json")
 
     data = {
         "benchmark": "LongMemEval",
         "dataset": DATASET_NAME,
-        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "timestamp": datetime.now().isoformat(),
         "api_url": MEMORY_API_URL,
         "top_k": TOP_K,
         "match_threshold": MATCH_THRESHOLD,
@@ -223,7 +219,7 @@ if __name__ == "__main__":
     try:
         health = brain.health()
         print(f"  Brain status: {health.status} (v{health.version})")
-    except BRAIN_ERRORS as e:
+    except Exception as e:
         print(f"  Warning: Health check failed: {e}")
 
     # Load dataset
