@@ -29,7 +29,14 @@ except ImportError:
     print("Please install: pip install tokyo-brain")
     sys.exit(1)
 
-from config import MEMORY_API_URL, MEMORY_API_KEY, DATASET_NAME, TOP_K, MATCH_THRESHOLD, RESULTS_DIR
+from config import (
+    DATASET_NAME,
+    MATCH_THRESHOLD,
+    MEMORY_API_KEY,
+    MEMORY_API_URL,
+    RESULTS_DIR,
+    TOP_K,
+)
 
 
 def load_longmemeval():
@@ -199,7 +206,7 @@ if __name__ == "__main__":
         print("Error: Set TOKYO_BRAIN_API_KEY environment variable")
         sys.exit(1)
 
-    print(f"Tokyo Brain Evaluation Harness")
+    print("Tokyo Brain Evaluation Harness")
     print(f"  API: {MEMORY_API_URL}")
     print(f"  Dataset: {DATASET_NAME}")
     print(f"  Top-K: {TOP_K}")
